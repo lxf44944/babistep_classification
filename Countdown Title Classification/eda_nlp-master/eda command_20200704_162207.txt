@@ -1,0 +1,8 @@
+eda command：
+python code/augment.py --input=./data/olddata.txt --output=data_augmmented.txt --num_aug=16 --alpha=0.05
+
+（目前最好的参数16 0.05）
+
+
+
+
