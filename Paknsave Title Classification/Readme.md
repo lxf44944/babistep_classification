@@ -26,4 +26,6 @@
 - `tf-idf`：将`product_classification.csv`中的数据用word2vec进行转化，分别使用LR，KNN，SVM，TF-IDF进行学习，并针对表现较好的SVM寻找最优参数。
 - `eda-undersampling`：在tf-idf模型的基础上，使用eda增强后的数据`eda_data_augmented.csv`进行学习，对数据进行欠采样处理，用KNN和最优参数的SVM对数据进行建模学习。
 ## 项目成果
+
 目前为止，项目找到的最佳模型为eda增强，数据欠采样，和网格优化后的SVM模型，模型准确率达97%，召回率和f1-score达到98%，并且学习曲线的方差和偏差都较小，整体结果比较理想。
+     
