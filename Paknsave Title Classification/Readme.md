@@ -15,15 +15,15 @@
         - `unique_product.csv`： 去除同一分店内重复数据和无关列之后的数据集，共390811条数据。
         - `unique_product_match.csv`：去除同一分店内重复数据和无关列，并与Countdown项目数据保持一致的数据集，共390811条数据。
         - `product_classification.csv`：去除所有重复数据，只保留name和cat信息的数据集，共35789条数据。
-        - `train.csv`：在`product_classification.csv`中随机提取75%数据成为训练集（用于eda-undersampling）。
-        - `test.csv`：在`product_classification.csv`中随机提取25%数据成为测试集（用于eda-undersampling）。
+        - `train.csv`：在`product_classification.csv`中随机提取75%数据成为训练集（用于eda-undersampling），共8948条数据。
+        - `test.csv`：在`product_classification.csv`中随机提取25%数据成为测试集（用于eda-undersampling），共26841条数据。
         - `train.txt`：将`train.csv`转化为txt格式，作为eda增强的输入。
-        - `eda_data_augmented.txt`：eda数据增强的输出，将原始数据增加13倍，每条数据改变量为5%，共501046条数据。
-        - `eda_data_augmented.csv`：将eda的输出去除重复数据，并转化为可用的csv格式，共368223条数据。
+        - `eda_data_augmented.txt`：eda数据增强的输出，将原始数据增加16倍，每条数据改变量为10%，共456397条数据。
+        - `eda_data_augmented.csv`：将eda转化为可用的csv格式，共456397条数据。
 - `eda_nlp-master`：eda数据增强所使用的包，其中：
     - `command.md`： 记录执行本项目eda数据增强所需的命令行指令。
 - `word2vec`：将`product_classification.csv`中的数据用word2vec进行转化，分别使用LR，KNN，SVM，TF-IDF进行学习。
 - `tf-idf`：将`product_classification.csv`中的数据用word2vec进行转化，分别使用LR，KNN，SVM，TF-IDF进行学习，并针对表现较好的SVM寻找最优参数。
 - `eda-undersampling`：在tf-idf模型的基础上，使用eda增强后的数据`eda_data_augmented.csv`进行学习，对数据进行欠采样处理，用KNN和最优参数的SVM对数据进行建模学习。
 ## 项目成果
-目前为止，项目找到的最佳模型为eda增强，数据欠采样，和网格优化后的SVM模型，模型准确率到达97.7%，学习曲线比较理想。
+目前为止，项目找到的最佳模型为eda增强，数据欠采样，和网格优化后的SVM模型，模型准确率达97%，召回率和f1-score达到98%，并且学习曲线的方差和偏差都较小，整体结果比较理想。
