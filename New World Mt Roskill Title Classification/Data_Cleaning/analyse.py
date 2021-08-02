@@ -20,15 +20,15 @@ from Data_Cleaning import Multi_analyse
 
 
 num_series=data_2.groupby('level_1')['PricePerItem'].agg(np.mean)
-# sns.barplot(x=num_series.index,y=num_series.values,palette="RdBu_r")
-# plt.ylabel('折扣商品中位数',fontproperties=font,fontsize=14)
-# plt.title('第一分类下不同类别折扣商品中位数统计',fontproperties=font,fontsize=20)
-# plt.xticks(rotation=90)
-# plt.subplots_adjust(bottom=0.3)
-# # plt.show()
-# plt.savefig('../analyse/第一分类下不同类别折扣商品中位数统计.png')
-# test=sns.regplot(num_series)
+sns.barplot(x=num_series.index,y=num_series.values,palette="RdBu_r")
+plt.ylabel('折扣商品中位数',fontproperties=font,fontsize=14)
+plt.title('第一分类下不同类别折扣商品中位数统计',fontproperties=font,fontsize=20)
+plt.xticks(rotation=90)
+plt.subplots_adjust(bottom=0.3)
 # plt.show()
+plt.savefig('../Analyse/第一分类下不同类别折扣商品中位数统计.png')
+test=sns.regplot(num_series)
+plt.show()
 df=pd.DataFrame({'category':num_series.index,'amount':num_series.values})
 # list=num_series.values
 # print(list)
@@ -51,6 +51,6 @@ Colors=['black','red','green','purple','blue','brown','grey','yellow','orange','
 
 for i in range(len(totalPrice)):
     sns.kdeplot(totalPrice[i],color=Colors[i])
-plt.savefig('../analyse/第一分类下不同类别商品价格数据密度函数.png')
+plt.savefig('../Analyse/第一分类下不同类别商品价格数据密度函数.png')
 plt.show()
 
