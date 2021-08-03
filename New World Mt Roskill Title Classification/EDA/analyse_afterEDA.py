@@ -5,7 +5,7 @@ import pandas as pd
 import seaborn as sns
 
 '''load data'''
-data=pd.read_csv('../Data/Data_afterEDA.csv',encoding='UTF-8')
+data=pd.read_csv('../Data/Data_afterEDA2.csv',encoding='UTF-8')
 count=data['Cat_l1'].value_counts()
 # print(count)
 '''show '''
@@ -16,5 +16,5 @@ plt.title('EDA增强后各商品数量统计',fontproperties=font,fontsize=20)
 plt.xticks(rotation=90)
 plt.subplots_adjust(bottom=0.3)
 # plt.show()
-plt.savefig('../Analyse/EDA.png')
+plt.savefig('../Analyse/EDA2.png')
 print(count.values)

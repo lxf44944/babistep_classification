@@ -10,6 +10,7 @@ import multiprocessing
 
 from matplotlib import pyplot as plt
 from sklearn import metrics
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, recall_score, f1_score
 from sklearn.neighbors import KNeighborsClassifier
 from torchtext import vocab
@@ -22,7 +23,7 @@ from sklearn.model_selection import GridSearchCV
 
 
 def loadData():
-    data = pd.read_csv('../../Data/Data_cleaned_afterEDA.csv', encoding='UTF-8')
+    data = pd.read_csv('../../Data/Data_cleaned_afterEDA2.csv', encoding='UTF-8')
     # 缺失值置为-1
     data = data.fillna(-1)
     # pName:商品名
@@ -121,7 +122,7 @@ def LR():
     """LR f1:0.20
         after std:0.16
     """
-    LR = LinearRegression()
+    LR = LogisticRegression()
     LR.fit(x_train, y_train)
 
     result = LR.predict(X_test)
@@ -132,7 +133,8 @@ def LR():
     lowerBound = 0
     result = [i if i <= upperBound else upperBound for i in result]
     result = [i if i >= lowerBound else lowerBound for i in result]
-    evaluation(result, Y_test, index2category, 'LinearRegression')
+    evaluation(result, Y_test, index2category, 'LogisticRegression')
+
 
 
 def KNN():
@@ -140,29 +142,37 @@ def KNN():
            after std:0.79
            k=5 f1:0.84:
     """
-    param_dict = {'n_neighbors': [1,2,3,4,5,6,7]}
+    # param_dict = {'n_neighbors': [1,2,3,4,5,6,7]}
     knn = KNeighborsClassifier(n_neighbors=5)
     # knn = GridSearchCV(knn, param_grid=param_dict, cv=10)
 
-    # knn.fit(x_train, y_train)
-    # result = knn.predict(X_test)
-    # evaluation(result, Y_test, index2category, "KNN")
-    #
-    # print(knn.score(X_test, Y_test))
+    knn.fit(x_train, y_train)
+    result = knn.predict(X_test)
+    evaluation(result, Y_test, index2category, "KNN")
+
     # print("最佳参数：", knn.best_params_)
     # print("最佳结果：", knn.best_score_)
     # print("最佳估计器", knn.best_estimator_)
-    train_sizes, train_score, test_score = learning_curve(knn, features, category_index,
-                                                          train_sizes=[0.1, 0.2, 0.4, 0.6, 0.8, 1], cv=5,
-                                                          scoring='accuracy',n_jobs=8)
-    train_error = 1 - np.mean(train_score, axis=1)
-    test_error = 1 - np.mean(test_score, axis=1)
-    plt.plot(train_sizes, train_error, 'o-', color='r', label='training')
-    plt.plot(train_sizes, test_error, 'o-', color='g', label='testing')
-    plt.legend(loc='best')
-    plt.xlabel('traing examples')
-    plt.ylabel('error')
-    plt.savefig('./learning_curve.png')
+    # train_sizes, train_score, test_score = learning_curve(knn, features, category_index,
+    #                                                       train_sizes=[0.1, 0.2, 0.4, 0.6, 0.8, 1], cv=5,
+    #                                                       scoring='accuracy',n_jobs=8)
+    # train_error = 1 - np.mean(train_score, axis=1)
+    # test_error = 1 - np.mean(test_score, axis=1)
+    # plt.plot(train_sizes, train_error, 'o-', color='r', label='training')
+    # plt.plot(train_sizes, test_error, 'o-', color='g', label='testing')
+    # plt.legend(loc='best')
+    # plt.xlabel('traing examples')
+    # plt.ylabel('error')
+    # plt.savefig('./learning_curve.png')
+
+def RandomForest():
+    rf=RandomForestClassifier(n_estimators=800,n_jobs=16)
+    rf.fit(x_train,y_train)
+    result=rf.predict(X_test)
+    evaluation(result,Y_test,index2category,"RandomForest")
 
 if __name__ == '__main__':
-    KNN()
+    # KNN()
+    # print('\n')
+    # LR()
+    RandomForest()
