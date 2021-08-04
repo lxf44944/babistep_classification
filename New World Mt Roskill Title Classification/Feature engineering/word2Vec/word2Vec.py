@@ -12,12 +12,15 @@ from matplotlib import pyplot as plt
 from sklearn import metrics
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, recall_score, f1_score
+from sklearn.multiclass import OneVsRestClassifier
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
 from torchtext import vocab
 from sklearn.model_selection import train_test_split,learning_curve
 from sklearn.linear_model import LogisticRegression, LinearRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
+import lightgbm as lgb
 
 ''' 加载数据'''
 
@@ -119,10 +122,10 @@ x_train, X_test, y_train, Y_test = train_test_split(features, category_index, ra
 
 
 def LR():
-    """LR f1:0.20
-        after std:0.16
+    """LR f1:0.846
+
     """
-    LR = LogisticRegression()
+    LR = LogisticRegression(tol=1e-10,n_jobs=16)
     LR.fit(x_train, y_train)
 
     result = LR.predict(X_test)
@@ -138,9 +141,9 @@ def LR():
 
 
 def KNN():
-    """knn f1:0.79
-           after std:0.79
-           k=5 f1:0.84:
+    """knn
+        k=4 : f1=0.93
+
     """
     # param_dict = {'n_neighbors': [1,2,3,4,5,6,7]}
     knn = KNeighborsClassifier(n_neighbors=5)
@@ -166,13 +169,36 @@ def KNN():
     # plt.savefig('./learning_curve.png')
 
 def RandomForest():
-    rf=RandomForestClassifier(n_estimators=800,n_jobs=16)
+
+    # 800 f1:0.947
+
+    rf=RandomForestClassifier(n_estimators=1000,n_jobs=16)
     rf.fit(x_train,y_train)
     result=rf.predict(X_test)
     evaluation(result,Y_test,index2category,"RandomForest")
 
+def SVM():
+    # undersampled
+
+    #
+
+    model = OneVsRestClassifier(SVC(C=1, gamma=20, decision_function_shape='ovr'))
+    model.fit(x_train, y_train)
+    svm_predict_labels = model.predict(X_test)
+    evaluation(svm_predict_labels, Y_test, index2category, "svm")
+
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
-    # KNN()
+    KNN()
     # print('\n')
     # LR()
-    RandomForest()
+    # RandomForest()
+    # SVM()
