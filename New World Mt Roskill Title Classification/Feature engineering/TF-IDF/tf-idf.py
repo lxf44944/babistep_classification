@@ -11,12 +11,14 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
 from matplotlib import pyplot as plt
 from sklearn.multiclass import OneVsRestClassifier
+import joblib
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 import lightgbm as lgb
+
 
 
 warnings.filterwarnings("ignore")
@@ -108,7 +110,7 @@ def KNN():
 
     """
     knn=KNeighborsClassifier(n_neighbors=4)
-    # param_dict={'n_neighbors': [4,5,6,8,9,10,13,15,17]}
+    # param_dict={'n_neighbors': [2,3,4,5,6,8,9,10,13,15,17]}
     # knn=GridSearchCV(knn, param_grid=param_dict, cv=5)
 
     knn.fit(x_train, y_train)
@@ -116,7 +118,7 @@ def KNN():
     evaluation(result, Y_test, index2category, "KNN")
 
 
-
+    #
     # print("最佳参数：", knn.best_params_)
     # print("最佳结果：", knn.best_score_)
     # print("最佳估计器", knn.best_estimator_)
@@ -161,10 +163,11 @@ def SVM():
     #f1:0.985
     #
 
-    model = OneVsRestClassifier(SVC(C=1000, gamma=0.001, kernel='rbf'))
-    model.fit(x_train, y_train)
-    svm_predict_labels = model.predict(X_test)
-    evaluation(svm_predict_labels, Y_test, index2category, "svm")
+    svm = OneVsRestClassifier(SVC(C=1000, gamma=0.001, kernel='rbf'))
+    svm.fit(x_train, y_train)
+    # joblib.dump(value=svm,filename='../../res/SVM_TFIDF_classifier.model')
+    result = svm.predict(X_test)
+    evaluation(result, Y_test, index2category, "svm")
 
 
 
@@ -219,8 +222,8 @@ if __name__ == '__main__':
     # model, evals_result = lgb_model(x_train, X_test, y_train, Y_test, verbose=False)
     # lgb.plot_metric(evals_result)
     # plt.show()
-    # SVM()
+    SVM()
     # RandomForest()
-    KNN()
+    # KNN()
     print('\n')
     # LR()

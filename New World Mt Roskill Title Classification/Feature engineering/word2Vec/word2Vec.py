@@ -51,15 +51,6 @@ def text_preprocess(text):
     text = " ".join(nltk.tokenize.word_tokenize(text.lower()))
     return text
 
-
-def load_embeddings():
-    cache = '.vector_cache'
-    if not os.path.exists(cache):
-        os.mkdir(cache)
-    word2vec = vocab.Vectors(name=r'./word2vec_300dim.txt', cache=cache)
-    return word2vec
-
-
 def Data_formate():
     df = pd.read_csv('../../Data/Data_cleaned_afterEDA.csv', encoding='UTF-8')
     tmp = df['pName'].apply(text_preprocess)
@@ -72,13 +63,6 @@ def Data_formate():
         for index, value in newdf.iterrows():
             newFile.writelines(value['pName'] + ' ' + value['Cat_l1'] + '\n')
 
-
-def encode_text_to_features(vector, text):
-    vectors = vector.get_vecs_by_tokens(text.split())
-    sentence_vector = torch.mean(vectors, dim=0)
-    return sentence_vector.tolist()
-
-
 def w2v_build():
     file = open('Data_formatted.txt', 'r', encoding='UTF-8')
     model = gensim.models.word2vec.Word2Vec(LineSentence(file),
@@ -87,6 +71,22 @@ def w2v_build():
 
     model.wv.save_word2vec_format(r'./word2vec_300dim.txt', binary=False)
     file.close()
+
+def load_embeddings():
+    cache = '.vector_cache'
+    if not os.path.exists(cache):
+        os.mkdir(cache)
+    word2vec = vocab.Vectors(name=r'./word2vec_300dim.txt', cache=cache)
+    return word2vec
+
+
+def encode_text_to_features(vector, text):
+    vectors = vector.get_vecs_by_tokens(text.split())
+    sentence_vector = torch.mean(vectors, dim=0)
+    return sentence_vector.tolist()
+
+
+
 
 
 '''evaluate'''
@@ -178,9 +178,6 @@ def RandomForest():
     evaluation(result,Y_test,index2category,"RandomForest")
 
 def SVM():
-    # undersampled
-
-    #
 
     model = OneVsRestClassifier(SVC(C=1, gamma=20, decision_function_shape='ovr'))
     model.fit(x_train, y_train)
@@ -197,8 +194,8 @@ def SVM():
 
 
 if __name__ == '__main__':
-    KNN()
+    # KNN()
     # print('\n')
-    # LR()
+    LR()
     # RandomForest()
     # SVM()

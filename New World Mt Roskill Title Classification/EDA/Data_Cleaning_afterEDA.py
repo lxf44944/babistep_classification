@@ -17,7 +17,7 @@ rus = RandomUnderSampler()
 X_resampled, y_resampled = rus.fit_resample(pName, Cat_l1)
 print(y_resampled.value_counts())
 
-df=pd.DataFrame({'pName':X_resampled.pName,'Cat_l1':y_resampled.Cat_l1})
-df.to_csv('../Data/Data_cleaned_afterEDA2.csv',index=False,encoding='UTF-8')
-
-
+# df=pd.DataFrame({'pName':X_resampled.pName,'Cat_l1':y_resampled.Cat_l1})
+# df.to_csv('../Data/Data_cleaned_afterEDA2.csv',index=False,encoding='UTF-8')
+#
+#
